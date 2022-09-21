@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html,body{
+  font-family: Poppins;
+}
+
 /* html,
 body {
   padding: 0;
