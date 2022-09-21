@@ -3,6 +3,7 @@
   height: 10vh;
   color: #111;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .marquee__content{

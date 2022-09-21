@@ -8,6 +8,8 @@ import styles from "../styles/Logos.module.css"
 
 const Logos = () => {
   return (
+    <>
+    <h2 className='uppercase py-5 text-center'>Collaborating brands</h2>
     <div className={styles.marquee}>
       <ul className={styles.marquee__content}>
         <li className='text-5xl'>
@@ -38,10 +40,9 @@ const Logos = () => {
          <li className='text-4xl'>
           <SiPuma/>
         </li>
-
       </ul>
     </div>
-
+  </>
   )
 }
 

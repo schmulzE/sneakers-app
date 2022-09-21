@@ -1,14 +1,15 @@
 import type { NextPage } from 'next'
 import Image from "next/image";
-import Pumasneakers from "../public/the-dk-photography-NUoPWImmjCU-unsplash(1).jpg";
+import Pumasneakers from "../public/nike sneakers.jpg";
 import Logos from "../components/Logos"
+import Cart from "../components/Cart"
 // import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
   return (
     <>
     <div className='container px-4'>
-      <Image src={Pumasneakers} width={400} height={400} alt="puma sneakers"/>
+      <Image src={Pumasneakers} width={400} height={600} alt="puma sneakers"/>
       <div className='text-xl font-black uppercase text-center pt-4'>
         the new season sneakers edition
       </div>
@@ -16,7 +17,11 @@ const Home: NextPage = () => {
         shop now
       </button>
     </div>
-      <Logos/>
+    <Logos/>
+    <div className='px-4'>
+      <Image src="/jordans.png" alt="" width={500} height={500}/>
+    </div>
+    <Cart/>
     </>
   )
 }
