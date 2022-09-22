@@ -6,9 +6,9 @@ const Form = () => {
       <h1 className='text-3xl uppercase font-black text-center tracking-wide'>sign up and get 15% off</h1>
       <p className="text-sm px-4 text-center">Sign up for promotions, tailored new arrivals, stock update and more - straight to your inbox</p>
       <div className='text-center py-6'>
-        <input className="mr-2" type="checkbox"/>
+        <input className="mr-2" type="radio"/>
         <span className='text-sm mr-3'>Women sneakers</span>
-        <input className="mr-2" type="checkbox"/>
+        <input className="mr-2" type="radio"/>
         <span className='text-sm'>Men sneakers</span>
       </div>
       <div className="mb-2 block">
