@@ -1,64 +1,52 @@
- import React from "react"
+ import React, {useState} from "react"
+ import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
+import { IconContext } from "react-icons";
 
 
-const products = [
-  {
-    id: 1,
-    name: 'Earthen Bottle',
-    href: '#',
-    price: '$48',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-    imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
-  },
-  {
-    id: 2,
-    name: 'Nomad Tumbler',
-    href: '#',
-    price: '$35',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-    imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.',
-  },
-  {
-    id: 3,
-    name: 'Focus Paper Refill',
-    href: '#',
-    price: '$89',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-    imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
-  },
-  {
-    id: 4,
-    name: 'Machined Mechanical Pencil',
-    href: '#',
-    price: '$35',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-    imageAlt: 'Hand holding black machined steel mechanical pencil with brass tip and top.',
-  },
-  // More products...
-]
+type Props = {
 
-const Cart = () => {
+} 
+
+const Cart: React.FC = ( {result}: any ) => {
+  const [isFalse, setIsFalse] = useState(true)
+
+  // console.log(result.items)
+  const AddItem = () => {
+    setIsFalse(!isFalse)
+  }
+
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="sr-only">Products</h2>
+    <div className="bg-stone-50">
+      <div className="mx-auto max-w-2xl py-8 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+  
 
         <div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
+          {result.items.filter((item: { id: number }) =>  item.id).map((product: any) => (
             <a key={product.id} href={product.href} className="group">
-              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 grid">
                 <img
-                  src={product.imageSrc}
+                  src={product.images?.cutOut}
                   alt={product.imageAlt}
-                  className="h-full w-full object-cover object-center group-hover:opacity-75"
+                  className="h-full w-full object-cover object-center group-hover:opacity-75" 
                 />
+                <IconContext.Provider value={{style: {fontWeight: 800}, className:"h-5 w-5",  }}>
+                  <button className="relative justify-self-end p-2 w-9 h-9 rounded-full mt-1 mr-3 font-black" onClick={AddItem}>
+                    {isFalse ? <BsSuitHeart/> : <BsSuitHeartFill/>}
+                  </button>
+                </IconContext.Provider>
               </div>
-              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
+              <h3 className="mt-4 text-sm text-gray-700 font-medium">{product.brand?.name}</h3>
+              <p className="mt-1 text-lg text-gray-900">{product.shortDescription}</p>
+              <p className="mt-1 text-lg font-medium text-gray-900">{product.priceInfo?.formattedFinalPrice}</p>
             </a>
           ))}
+
         </div>
+        <button className='uppercase bg-white text-black px-8 my-4 py-2 outline-none border border-slate-800 rounded block w-full'>
+          shop now
+        </button>
       </div>
+      
     </div>
   )
 }
