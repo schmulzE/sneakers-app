@@ -11,7 +11,7 @@ import {
 const Footer = () => {
   return (
    <footer className="px-2 bg-neutral-900 text-white">
-        <Accordion allowMultiple>
+        <Accordion defaultIndex={[0]} allowMultiple>
           <AccordionItem>
             {({ isExpanded }) => (
               <>
@@ -85,8 +85,9 @@ const Footer = () => {
             )}
           </AccordionItem>
         </Accordion>
+
         <p className='text-sm p-2 mt-4'>
-          'SNEAKFIT' and the 'SNEAKFIT' logo are trade marks of SNEAKFIT NG Limited and are registered in numerous jurisdictions around the world.
+          &apos;SNEAKFIT&apos; and the &apos;SNEAKFIT&apos; logo are trade marks of SNEAKFIT NG Limited and are registered in numerous jurisdictions around the world.
          <br/> © Copyright 2022 SNEAKFIT NG Limited. All rights reserved.
         </p>
       </footer>
