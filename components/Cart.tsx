@@ -1,16 +1,57 @@
- import React, {useState} from "react"
- import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
+import React, {useState} from "react"
+import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
 
 
-type Props = {
+// type resultType = {
+//     "items": [
+//   {
+//       "id": number,
+//       "shortDescription": string,
+//       "merchantId": number,
+//       "brand"?: {
+//           "id": number,
+//           "name": string
+//       },
+//       "gender": string,
+//       "images"?: {
+//           "cutOut": string
+//           "model": string,
+//           "all": null
+//       },
+//       "priceInfo"?: {
+//           "formattedFinalPrice": string,
+//           "formattedInitialPrice": string,
+//           "finalPrice": number,
+//           "initialPrice": number,
+//           "currencyCode": string,
+//           "isOnSale": false,
+//           "discountLabel": null,
+//           "installmentsLabel": null
+//       },
+//       "merchandiseLabel": string,
+//       "merchandiseLabelField": string,
+//       "isCustomizable": false,
+//       "availableSizes": null,
+//       "stockTotal": number,
+//       "url": string,
+//       "promotionLabel": null,
+//       "type": string,
+//       "properties"?: {
+//           "rankingTrackingId": string
+//       }
+//   },
+//   ]
+// }
 
+type Props = {
+  data: any[]
 } 
 
-const Cart: React.FC = ( {result}: any ) => {
+const Cart: React.FC<Props> = ( {data} ) => {
   const [isFalse, setIsFalse] = useState(true)
 
-  // console.log(result.items)
+  console.log(data)
   const AddItem = () => {
     setIsFalse(!isFalse)
   }
@@ -21,7 +62,7 @@ const Cart: React.FC = ( {result}: any ) => {
   
 
         <div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {result.items.filter((item: { id: number }) =>  item.id).map((product: any) => (
+          {data?.filter((item: { id: number }) =>  item.id).map((product: any) => (
             <a key={product.id} href={product.href} className="group">
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8 grid">
                 <img
@@ -42,9 +83,9 @@ const Cart: React.FC = ( {result}: any ) => {
           ))}
 
         </div>
-        <button className='uppercase bg-white text-black px-8 my-4 py-2 outline-none border border-slate-800 rounded block w-full'>
+        {/* <button className='uppercase bg-white text-black px-8 my-4 py-2 outline-none border border-slate-800 rounded block w-full'>
           shop now
-        </button>
+        </button> */}
       </div>
       
     </div>
