@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import React, { ReactElement } from 'react'
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
+import { ChakraProvider } from '@chakra-ui/react'
 
 
 function Layout({children }: {children: ReactElement}) {
@@ -16,7 +17,13 @@ function Layout({children }: {children: ReactElement}) {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Layout><Component {...pageProps} /></Layout> 
+  return( 
+     <ChakraProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+     </ChakraProvider>
+   )
 }
 
 export default MyApp

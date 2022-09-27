@@ -1,9 +1,6 @@
 import React from 'react'
 import {SiReebok, SiNike, SiAdidas, SiJordan, SiPuma } from 'react-icons/si'
-
-import Image from 'next/image';
-
-
+// import Image from 'next/image';
 import styles from "../styles/Logos.module.css"
 
 const Logos = () => {

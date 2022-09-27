@@ -4,6 +4,7 @@
 
 html,body{
   font-family: Poppins;
+  /* background-color: #FEFEFA; */
 }
 
 .css-17mg6aq{
@@ -12,6 +13,12 @@ html,body{
 
 input {accent-color: black;}
 
+
+.wishlist{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
 /* html,
 body {
   padding: 0;

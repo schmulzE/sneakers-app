@@ -9,10 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.3.4",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@types/react-slick": "^0.23.10",
+    "framer-motion": "^6",
     "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "react-slick": "^0.29.0"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
