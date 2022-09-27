@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import Cart from "../components/Cart";
+import { useRouter } from 'next/router'
+import {FaChevronLeft, FaChevronRight} from "react-icons/fa"
 
 
 type IProps = {
@@ -13,16 +15,18 @@ type IProps = {
 const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => {
   const [pages] = useState(Math.round(data.length / dataLimit));
   const [currentPage, setCurrentPage] = useState(1);
-
+  const router = useRouter()
+  
   function goToNextPage() {
-     // not yet implemented
-     setCurrentPage((page) => page + 1)
+    // not yet implemented
+    setCurrentPage((page) => page + 1)
+    router.push(`?page=2`, undefined, { shallow: true })
   }
-
+  
   function goToPreviousPage() {
-     // not yet implemented
+    // not yet implemented
     setCurrentPage((page) => page - 1)
-
+    router.push(`?page=1`, undefined, { shallow: true })
   }
 
   function changePage(event: React.ChangeEvent<HTMLInputElement>) {
@@ -42,7 +46,6 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
      // not yet implemented
     let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
     return new Array(pageLimit).fill(0).map((_, idx): number => start + idx + 1);
-
   };
 
   return (
@@ -50,9 +53,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
       <h1>{title}</h1>
 
       {/* show the posts, 10 posts at a time */}
-      {/* <div className="dataContainer"> */}
         <Cart data={getPaginatedData()}/>
-      {/* </div> */}
 
       {/* show the pagiantion
           it consists of next and previous buttons
@@ -65,7 +66,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
         onClick={goToPreviousPage}
         className={`prev ${currentPage === 1 ? 'disabled' : ''}`}
       >
-        prev
+        <FaChevronLeft/>
       </button>
 
       {/* show page numbers */}
@@ -73,9 +74,10 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
         <button
           key={index}
           onClick ={(event: React.MouseEvent) => changePage}
-          className={`paginationItem ${currentPage === item ? 'active' : null}`}
+          className={`paginationItem ${currentPage === item ? 'p-2 font-black' : null}`}
         >
-          <span>{item}</span>
+          <span className='m-5'>{item}</span>
+          {/* <span>{index}</span> */}
         </button>
       ))}
 
@@ -84,7 +86,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
         onClick={goToNextPage}
         className={`next ${currentPage === pages ? 'disabled' : ''}`}
       >
-        next
+        <FaChevronRight/>
       </button>
     </div>
   </div>
