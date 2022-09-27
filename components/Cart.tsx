@@ -2,48 +2,6 @@ import React, {useState} from "react"
 import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
 
-
-// type resultType = {
-//     "items": [
-//   {
-//       "id": number,
-//       "shortDescription": string,
-//       "merchantId": number,
-//       "brand"?: {
-//           "id": number,
-//           "name": string
-//       },
-//       "gender": string,
-//       "images"?: {
-//           "cutOut": string
-//           "model": string,
-//           "all": null
-//       },
-//       "priceInfo"?: {
-//           "formattedFinalPrice": string,
-//           "formattedInitialPrice": string,
-//           "finalPrice": number,
-//           "initialPrice": number,
-//           "currencyCode": string,
-//           "isOnSale": false,
-//           "discountLabel": null,
-//           "installmentsLabel": null
-//       },
-//       "merchandiseLabel": string,
-//       "merchandiseLabelField": string,
-//       "isCustomizable": false,
-//       "availableSizes": null,
-//       "stockTotal": number,
-//       "url": string,
-//       "promotionLabel": null,
-//       "type": string,
-//       "properties"?: {
-//           "rankingTrackingId": string
-//       }
-//   },
-//   ]
-// }
-
 type Props = {
   data: any[]
 } 
@@ -51,7 +9,7 @@ type Props = {
 const Cart: React.FC<Props> = ( {data} ) => {
   const [isFalse, setIsFalse] = useState(true)
 
-  console.log(data)
+  // console.log(data)
   const AddItem = () => {
     setIsFalse(!isFalse)
   }
