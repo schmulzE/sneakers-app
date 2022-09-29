@@ -1,24 +1,24 @@
-import React, {useState} from "react"
+import React, { useCallback} from "react"
 import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
 
 type Props = {
-  data: any[]
+  data: any[];
+  handleClick: (item: any) => void;
+  wishlist: any[]
 } 
 
-const Cart: React.FC<Props> = ( {data} ) => {
-  const [isFalse, setIsFalse] = useState(true)
+const Cart: React.FC<Props> = ( {data, handleClick, wishlist} ) => {
 
-  // console.log(data)
-  const AddItem = () => {
-    setIsFalse(!isFalse)
-  }
+  const wishlisted = useCallback(
+    (item : any) =>  wishlist.findIndex((it) => it.id == item.id) != -1
+     ,
+    [wishlist],
+  )
 
   return (
-    <div className="bg-stone-50">
+    <div className="bg-white">
       <div className="mx-auto max-w-2xl py-8 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-  
-
         <div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {data?.filter((item: { id: number }) =>  item.id).map((product: any) => (
             <a key={product.id} href={product.href} className="group">
@@ -28,9 +28,9 @@ const Cart: React.FC<Props> = ( {data} ) => {
                   alt={product.imageAlt}
                   className="h-full w-full object-cover object-center group-hover:opacity-75" 
                 />
-                <IconContext.Provider value={{style: {fontWeight: 800}, className:"h-5 w-5",  }}>
-                  <button className="relative justify-self-end p-2 w-9 h-9 rounded-full mt-1 mr-3 font-black" onClick={AddItem}>
-                    {isFalse ? <BsSuitHeart/> : <BsSuitHeartFill/>}
+                <IconContext.Provider value={{style: {fontWeight: 800}, className:"h-5 w-5"}}>
+                  <button className="relative justify-self-end p-2 w-9 h-9 rounded-full mt-1 mr-3 font-black" onClick={() =>{ handleClick(product);}}>
+                    {!wishlisted(product) ? <BsSuitHeart/> : <BsSuitHeartFill/>}
                   </button>
                 </IconContext.Provider>
               </div>

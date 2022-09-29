@@ -14,36 +14,45 @@ type IProps = {
 
 const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => {
   const [pages] = useState(Math.round(data.length / dataLimit));
+  const [wishlist, setWishlist] =  useState<any[]>([])
+
+  const handleClick = (item: any) => {
+    if(!wishlist.includes(item)) {
+      setWishlist([
+        ...wishlist,
+        item
+      ])
+    }else{
+      setWishlist((wl) => wl.filter((it) => it.id != item.id))
+    }
+    console.log(wishlist)
+  }
+
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter()
   
   function goToNextPage() {
-    // not yet implemented
     setCurrentPage((page) => page + 1)
     router.push(`?page=2`, undefined, { shallow: true })
   }
   
   function goToPreviousPage() {
-    // not yet implemented
     setCurrentPage((page) => page - 1)
     router.push(`?page=1`, undefined, { shallow: true })
   }
 
   function changePage(event: React.ChangeEvent<HTMLInputElement>) {
-     // not yet implemented
     const pageNumber = Number( event.target.textContent);
     setCurrentPage(pageNumber);
   }
 
   const getPaginatedData = (): number[] => {
-     // not yet implemented
     const startIndex = currentPage * dataLimit - dataLimit;
     const endIndex = startIndex + dataLimit;
     return data.slice(startIndex, endIndex);
   };
 
   const getPaginationGroup = () => {
-     // not yet implemented
     let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
     return new Array(pageLimit).fill(0).map((_, idx): number => start + idx + 1);
   };
@@ -52,12 +61,12 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
     <div>
       <h1>{title}</h1>
 
-      {/* show the posts, 10 posts at a time */}
-        <Cart data={getPaginatedData()}/>
+      {/* show the posts, 30 posts at a time */}
+        <Cart data={getPaginatedData()} handleClick={handleClick} wishlist={wishlist}/>
 
       {/* show the pagiantion
           it consists of next and previous buttons
-          along with page numbers, in our case, 5 page
+          along with page numbers, in our case, 2 page
           numbers at a time
       */}
       <div className="pagination text-center m-3">
