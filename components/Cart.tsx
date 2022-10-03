@@ -1,6 +1,7 @@
-import React, { useCallback} from "react"
+import React, { useCallback, useContext } from "react"
 import { BsSuitHeart, BsSuitHeartFill } from "react-icons/bs";
 import { IconContext } from "react-icons";
+
 
 type Props = {
   data: any[];
@@ -16,6 +17,9 @@ const Cart: React.FC<Props> = ( {data, handleClick, wishlist} ) => {
     [wishlist],
   )
 
+  
+  console.log(wishlist)
+  
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl py-8 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">

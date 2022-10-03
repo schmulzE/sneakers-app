@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Cart from "../components/Cart";
 import { useRouter } from 'next/router'
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa"
+import WishlistContext from "../store/wishlist_context";
 
 
 type IProps = {
@@ -11,38 +12,55 @@ type IProps = {
   dataLimit: number
 }
 
-
 const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => {
   const [pages] = useState(Math.round(data.length / dataLimit));
-  const [wishlist, setWishlist] =  useState<any[]>([])
-
-  const handleClick = (item: any) => {
-    if(!wishlist.includes(item)) {
-      setWishlist([
-        ...wishlist,
-        item
-      ])
-    }else{
-      setWishlist((wl) => wl.filter((it) => it.id != item.id))
-    }
-    console.log(wishlist)
-  }
-
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter()
+  const wishlistCtx = useContext(WishlistContext)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // const initialState: any[] = []
+  // const [wishlist, setWishlist] =  useState<any[]>(initialState)
+
+  const wishlist = wishlistCtx.items
+
+
+
+  const handleClick = (item: { id: number; }) => {
+    wishlistCtx.addItem(item)
+    console.log(item.id)
+  }
+
+  // console.log(wishlistCtx.removeItem)
+
+
+  // useEffect(() => {
+  //   const wishlistData = JSON.parse(localStorage.getItem("wishlist")!);
+  //   if (wishlistData) {
+  //     setWishlist(wishlistData);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (wishlist !== initialState) {
+  //     localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  //   }
+  // }, [initialState, wishlist]);
+
   
-  function goToNextPage() {
-    setCurrentPage((page) => page + 1)
+  // console.log(wishlist)
+  
+  function goToNextPage(): void {
+    setCurrentPage((page: number) => page + 1)
     router.push(`?page=2`, undefined, { shallow: true })
   }
   
   function goToPreviousPage() {
-    setCurrentPage((page) => page - 1)
+    setCurrentPage((page: number) => page - 1)
     router.push(`?page=1`, undefined, { shallow: true })
   }
 
   function changePage(event: React.ChangeEvent<HTMLInputElement>) {
-    const pageNumber = Number( event.target.textContent);
+    const pageNumber = Number(event.target.textContent);
     setCurrentPage(pageNumber);
   }
 
@@ -64,7 +82,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
       {/* show the posts, 30 posts at a time */}
         <Cart data={getPaginatedData()} handleClick={handleClick} wishlist={wishlist}/>
 
-      {/* show the pagiantion
+      {/* show the pagination
           it consists of next and previous buttons
           along with page numbers, in our case, 2 page
           numbers at a time
@@ -103,3 +121,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
 }
 
 export default Pagination
+
+function setWishlist(newList: any) {
+  throw new Error('Function not implemented.');
+}
