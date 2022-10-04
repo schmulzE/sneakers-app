@@ -15,23 +15,10 @@ const cartReducer = (state: any, action: any) => {
       totalItem: updatedTotalItems
     }
   }
-  //  if(action.type === 'REMOVE'){
-  //   const existingWishlistItem = state.items.findIndex((item: { id: any; }) => item.id == action.item.id)
-  //   const existingItem = state.items[existingWishlistItem]
-  //   let updatedItems
-  //   let updatedTotalItems
-  //   if(existingItem){
-  //     updatedItems = state.items.findIndex((item: { id: any; }) => item.id !== action.item.id)
-  //     updatedTotalItems = updatedItems.length
-  //   }
-  //   return {
-  //     items: updatedItems,
-  //     totalItem: updatedTotalItems
-  //   }
-  // }
 
   if(action.type === 'REMOVE'){
-    const updatedItems = state.items.findIndex((item: { id: number; }) => item.id != action.item.id)
+    // const updatedItems = state.items.findIndex((item: { id: number; }) => item.id != action.item.id)
+    const updatedItems = state.items.filter((item: any) => item.id !== action.id)
     const updatedTotalItems = updatedItems.length
     return {
       items: updatedItems,
