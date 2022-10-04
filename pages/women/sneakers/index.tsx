@@ -40,12 +40,12 @@ export async function getStaticProps() {
     redirect: 'follow'
   };
 
-  const res = await fetch("https://www.farfetch.com/ng/plpslice/listing-api/products-facets?page=1&view=60&sort=3&scale=274&pagetype=Shopping&rootCategory=Women&pricetype=FullPrice&c-category=136310", requestOptions)
-  const data = await res.json()
-  const result = data.listingItems.items
+  // const res = await fetch("https://www.farfetch.com/ng/plpslice/listing-api/products-facets?page=1&view=60&sort=3&scale=274&pagetype=Shopping&rootCategory=Women&pricetype=FullPrice&c-category=136310", requestOptions)
+  // const data = await res.json()
+  // const result = data.listingItems.items
 
   // Pass data to the page via props
-  return { props: { result } }
+  // return { props: { result } }
 }
 
 export default WomenSneakers

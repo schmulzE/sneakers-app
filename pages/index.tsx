@@ -7,6 +7,7 @@ import Card from "../components/Card"
 import { BsTag, BsQuestionCircle } from 'react-icons/bs'
 import {FaRegComment} from 'react-icons/fa'
 import Form from "../components/Form";
+// import options from '../client_api/options';
 
 // import styles from '../styles/Home.module.css'
 
@@ -26,13 +27,17 @@ const Home: NextPage = () => {
     <div className='px-4'>
       <Image src="/jordans.png" alt="" width={500} height={500}/>
     </div>
-    <Cart/>
+    <Cart data={[]} handleClick={function (item: any): void {
+        throw new Error('Function not implemented.');
+      } } wishlist={[]}/>
      <div className='px-4'>
       <Image src="/girl on sneakers.png" alt="" width={400} height={700}/>
       <h2 className='uppercase font-bold'>walk consciously</h2>
       <p >choose your favourite from the bramds new collection now</p>
     </div>
-    <Cart/>
+    <Cart data={[]} handleClick={function (item: any): void {
+        throw new Error('Function not implemented.');
+      } } wishlist={[]}/>
     <div className='px-2'>
       <Card icon={<BsTag/>} header="HOW TO SHOP" text='your guide to shopping and placing orders'/>
       <Card icon={<BsQuestionCircle/>} header="FAQs"  text='your questions answered'/>

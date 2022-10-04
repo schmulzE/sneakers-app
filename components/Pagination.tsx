@@ -17,17 +17,18 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter()
   const wishlistCtx = useContext(WishlistContext)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // const initialState: any[] = []
-  // const [wishlist, setWishlist] =  useState<any[]>(initialState)
 
   const wishlist = wishlistCtx.items
 
 
 
   const handleClick = (item: { id: number; }) => {
-    wishlistCtx.addItem(item)
-    console.log(item.id)
+   const foundItem =  wishlistCtx.items.find((it: { id: number; }) => it.id === item.id )
+   if(foundItem) {
+    wishlistCtx.removeItem(item.id)
+   }else {
+     wishlistCtx.addItem(item)
+   }
   }
 
   // console.log(wishlistCtx.removeItem)
@@ -121,7 +122,3 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
 }
 
 export default Pagination
-
-function setWishlist(newList: any) {
-  throw new Error('Function not implemented.');
-}
