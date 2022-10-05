@@ -1,49 +1,72 @@
-import React from 'react'
-import { IconContext } from "react-icons";
-import { BsFilter } from "react-icons/bs";
+import React, { Dispatch, SetStateAction } from 'react'
 import {
   Modal,
-  ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
-  Button,
 } from '@chakra-ui/react'
 
 
+  type Props = {
+    onOpen: boolean;
+    setPopUp: Dispatch<SetStateAction<boolean>>;
+    fetchedData: any[];
+    setFetchedData: Dispatch<SetStateAction<any[]>>
+  }
 
-const Modals: React.FC = () => {
-  const { onOpen,isOpen, onClose } = useDisclosure()
+  const Modals: React.FC<Props> = ({onOpen, setPopUp, fetchedData, setFetchedData}) => {
+
+    // console.log(fetchedData)
+
+  const onCloseHandler = () => {
+    setPopUp(false)
+  }
+
+  const sortHighHandler = () => {
+    const sortedLowToHigh =  fetchedData.sort((x, y) => y.priceInfo?.finalPrice - x.priceInfo?.finalPrice)
+    setFetchedData((current) => [ ...current, sortedLowToHigh])
+  }
+
+  const sortLowHandler = () => {
+    const sortedLowToHigh =  fetchedData.sort((x, y) => x.priceInfo?.finalPrice - y.priceInfo?.finalPrice)
+    setFetchedData((current) => [ ...current, sortedLowToHigh])
+    // console.log('clicked')
+    // console.log(fetchedData)
+
+  }
+
   return (
     <>
-    <IconContext.Provider value={{ className: "global-class-name h-8 w-8", }}>
-      <button onClick={onOpen} className='capitalize flex justify-center align-center bg-st my-4 py-1 outline-none border border-slate-800 rounded block w-full'>
-        <BsFilter/>
-        <span className='text-xl font-medium'>Filter</span>
-      </button> 
-    </IconContext.Provider>
 
-      <Modal size={'full'} blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
-          <ModalCloseButton />
+      <Modal size={'full'} isOpen={onOpen} onClose={onCloseHandler}>
+        <ModalContent className='pt-12'>
+          <ModalCloseButton/>
           <ModalBody>
-            Hi there!
+             <h2 className='text-2xl border-bottom border-b-4 border-black w-20 font-semibold pb-2'>Sort by</h2>
+            <hr/>
+            <ul className="my-6">
+              <li className='mb-6'>
+                <input className="mr-2" type="radio" id='low' value='low' name='price' onClick={sortLowHandler}/>
+                <label className=' mr-3' htmlFor='low'>Price: low to high</label>       
+              </li>
+              <li>
+                <input className="mr-2" type="radio" id='high' value='high' name='price' onClick={sortHighHandler}/>
+                <label className=' mr-3' htmlFor='high'>Price: high to low</label>       
+                </li>
+            </ul>
+            <h2 className='text-2xl border-bottom border-b-4 border-black w-20 font-semibold pb-2 mt-8 tracking-wider'>Filters</h2>
+            <hr/>
+            <ul className='font-bold my-6'>
+              <li className='mb-6'>Color</li>
+              <li className='mb-6'>Price</li>
+              <li className='mb-6'>Brand</li>
+            </ul>
           </ModalBody>
-
-          {/* <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant='ghost'>Secondary Action</Button>
-          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </>
   )
 }
-export default Modals
+
+
+export default Modals;
