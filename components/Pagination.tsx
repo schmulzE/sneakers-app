@@ -21,17 +21,14 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
   const wishlist = wishlistCtx.items
 
 
-
   const handleClick = (item: { id: number; }) => {
    const foundItem =  wishlistCtx.items.find((it: { id: number; }) => it.id === item.id )
    if(foundItem) {
     wishlistCtx.removeItem(item.id)
    }else {
-     wishlistCtx.addItem(item)
+    wishlistCtx.addItem(item)
    }
   }
-
-  // console.log(wishlistCtx.removeItem)
 
 
   // useEffect(() => {
@@ -47,9 +44,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
   //   }
   // }, [initialState, wishlist]);
 
-  
-  // console.log(wishlist)
-  
+
   function goToNextPage(): void {
     setCurrentPage((page: number) => page + 1)
     router.push(`?page=2`, undefined, { shallow: true })
