@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import Image from "next/image";
 import Head from 'next/head'
 import { IconContext } from "react-icons";
@@ -6,14 +6,18 @@ import { BsHandbag, BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
 import WishlistContext from "../store/wishlist_context";
+import Modal from "./Modal"
 // import Wishlist from '../pages/wishlist';
 
 const Navbar = () => {
   const wishlistCtx = useContext(WishlistContext)
+  const [popUp, setPopUp] = useState(false)
 
   const totalWishlist = wishlistCtx.items.length
 
-  // console.log(totalWishlist)
+   const modalHandler = () => {
+    setPopUp(true)
+  }
 
   return (
     <>
@@ -35,36 +39,43 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-    <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5">
-      <div className="container flex flex-wrap justify-between items-center mx-auto">
-        <div>
-          <IconContext.Provider value={{ className: "w-7 h-7" }}>
-          <button type="button" className="p-1 mr-5 text-2xl rounded-lg md:hidden focus:outline-none focus:ring-2">
-            <AiOutlineMenu />
-          </button>
-          </IconContext.Provider>
-          
-          <IconContext.Provider value={{ className: "w-6 h-6 mb-1" }}>
-          <button type="button" className="p-1 text-xl rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-            <FiSearch/>
-          </button>
-          </IconContext.Provider>
+      <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5">
+        <div className="container flex flex-wrap justify-between items-center mx-auto">
+          <div>
+            <IconContext.Provider value={{ className: "w-7 h-7" }}>
+            <button onClick={modalHandler} type="button" className="p-1 mr-5 text-2xl rounded-lg md:hidden focus:outline-none focus:ring-2">
+              <AiOutlineMenu />
+            </button>
+            </IconContext.Provider>
+            
+            <IconContext.Provider value={{ className: "w-6 h-6 mb-1" }}>
+            <button type="button" className="p-1 text-xl rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+              <FiSearch/>
+            </button>
+            </IconContext.Provider>
 
+          </div>
+          {/* <a href="https://flowbite.com/" className="flex items-center"> */}
+              <Image src="/SNEAKFIT.svg" width={100} height={32} alt="Sneakfit Logo" />
+          {/* </a> */}
+          <div>
+            <button type="button" className="relative p-1 text-xl mr-5 rounded-lg md:hidden focus:outline-none focus:ring-2">
+              <BsSuitHeart />
+              <div className="inline-flex absolute -bottom-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-black">{totalWishlist}</div>
+            </button>
+            <button type="button" className="p-1 text-xl rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" >
+              <BsHandbag/>
+            </button>
+          </div>
         </div>
-        {/* <a href="https://flowbite.com/" className="flex items-center"> */}
-            <Image src="/SNEAKFIT.svg" width={100} height={32} alt="Sneakfit Logo" />
-        {/* </a> */}
-        <div>
-          <button type="button" className="relative p-1 text-xl mr-5 rounded-lg md:hidden focus:outline-none focus:ring-2">
-            <BsSuitHeart />
-            <div className="inline-flex absolute -bottom-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-black">{totalWishlist}</div>
-          </button>
-          <button type="button" className="p-1 text-xl rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" >
-            <BsHandbag/>
-          </button>
-        </div>
-      </div>
-    </nav>
+      </nav>
+      <Modal onOpen={popUp} setPopUp={setPopUp}>
+        <ul>
+          <li>Men</li>
+          <li>Women</li>
+          <li>Kids</li>
+        </ul>
+      </Modal>
     </>
   )
 }
