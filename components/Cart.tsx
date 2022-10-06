@@ -18,7 +18,7 @@ const Cart: React.FC<Props> = ( {data, handleClick, wishlist} ) => {
   )
 
   
-  console.log(wishlist)
+  // console.log(wishlist)
   
   return (
     <div className="bg-white">
@@ -30,7 +30,7 @@ const Cart: React.FC<Props> = ( {data, handleClick, wishlist} ) => {
                 <img
                   src={product.images?.cutOut}
                   alt={product.imageAlt}
-                  className="h-full w-full object-cover object-center group-hover:opacity-75" 
+                  className="h-full w-full object-cover object-center group-hover:opacity-75"
                 />
                 <IconContext.Provider value={{style: {fontWeight: 800}, className:"h-5 w-5"}}>
                   <button className="relative justify-self-end p-2 w-9 h-9 rounded-full mt-1 mr-3 font-black" onClick={() =>{ handleClick(product);}}>
