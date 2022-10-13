@@ -4,7 +4,6 @@
 
 html,body{
   font-family: Poppins;
-  /* background-color: #FEFEFA; */
 }
 
 .css-17mg6aq{
@@ -19,29 +18,70 @@ input {accent-color: black;}
   bottom: 0;
   right: 0;
 }
-/* html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+input {
+  box-shadow: 0;
+  outline: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+input[type=number] {
+  border: 1px solid #ddd;
+  /* text-align: center; */
+  /* font-size: 1.6em; */
+  -moz-appearance: textfield;
 }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+/* input[type=number]:invalid, */
+/* input[type=number]:out-of-range { */
+  /* border: 2px solid #ff6347; */
+/* } */
 
-* {
+input[type=range] {
   box-sizing: border-box;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 330px;
+  margin: 0;
+  padding: 0 2px;
+  /* Add some L/R padding to ensure box shadow of handle is shown */
+  overflow: hidden;
+  border: 0;
+  border-radius: 1px;
+  outline: none;
+  background: linear-gradient(grey, grey) no-repeat center;
+  /* Use a linear gradient to generate only the 2px height background */
+  background-size: 100% 2px;
+  pointer-events: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-} */
+input[type=range]:active,
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  height: 28px;
+  width: 28px;
+  border-radius: 28px;
+  background-color: #fff;
+  position: relative;
+  margin: 5px 0;
+  /* Add some margin to ensure box shadow is shown */
+  cursor: pointer;
+  -webkit-appearance: none;
+          appearance: none;
+  pointer-events: all;
+  box-shadow: 0 1px 4px 0.5px rgba(0, 0, 0, 0.25);
+}
+input[type=range]::-webkit-slider-thumb::before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  top: 13px;
+  left: 100%;
+  width: 2000px;
+  height: 2px;
+}
