@@ -1,13 +1,13 @@
 import React, {useContext, useState} from 'react'
 import Image from "next/image";
-import Head from 'next/head'
+import Head from 'next/head';
+import Link from 'next/link';
 import { IconContext } from "react-icons";
 import { BsHandbag, BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
 import WishlistContext from "../store/wishlist_context";
 import Modal from "./Modal"
-// import Wishlist from '../pages/wishlist';
 
 const Navbar = () => {
   const wishlistCtx = useContext(WishlistContext)
@@ -55,14 +55,16 @@ const Navbar = () => {
             </IconContext.Provider>
 
           </div>
-          {/* <a href="https://flowbite.com/" className="flex items-center"> */}
+          <Link href="/">
               <Image src="/SNEAKFIT.svg" width={100} height={32} alt="Sneakfit Logo" />
-          {/* </a> */}
+          </Link>
           <div>
-            <button type="button" className="relative p-1 text-xl mr-5 rounded-lg md:hidden focus:outline-none focus:ring-2">
-              <BsSuitHeart />
-              <div className="inline-flex absolute -bottom-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-black">{totalWishlist}</div>
-            </button>
+            <Link href='/wishlist'>
+              <button type="button" className="relative p-1 text-xl mr-5 rounded-lg md:hidden focus:outline-none focus:ring-2">
+                <BsSuitHeart />
+                <div className="inline-flex absolute -bottom-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-black">{totalWishlist}</div>
+              </button>
+            </Link>
             <button type="button" className="p-1 text-xl rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" >
               <BsHandbag/>
             </button>
@@ -70,10 +72,10 @@ const Navbar = () => {
         </div>
       </nav>
       <Modal onOpen={popUp} setPopUp={setPopUp}>
-        <ul>
-          <li>Men</li>
-          <li>Women</li>
-          <li>Kids</li>
+        <ul className='flex flex-col justify-center items-center pt-16'>
+          <li className='py-5'>Men</li>
+          <li className='py-5'>Women</li>
+          <li className='py-5'>Kids</li>
         </ul>
       </Modal>
     </>
