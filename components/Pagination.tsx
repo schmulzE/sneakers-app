@@ -3,7 +3,7 @@ import Cart from "../components/Cart";
 import { useRouter } from 'next/router'
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa"
 import WishlistContext from "../store/wishlist_context";
-
+import { BsSuitHeart } from 'react-icons/bs'
 
 type IProps = {
   data: any[],
@@ -76,7 +76,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
       <h1>{title}</h1>
 
       {/* show the posts, 30 posts at a time */}
-        <Cart data={getPaginatedData()} handleClick={handleClick} wishlist={wishlist}/>
+        <Cart data={getPaginatedData()} handleClick={handleClick} wishlist={wishlist} icon={<BsSuitHeart/>}/>
 
       {/* show the pagination
           it consists of next and previous buttons
