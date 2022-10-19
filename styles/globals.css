@@ -85,3 +85,17 @@ input[type=range]::-webkit-slider-thumb::before {
   width: 2000px;
   height: 2px;
 }
+
+.swiper-horizontal>.swiper-scrollbar, .swiper-scrollbar.swiper-scrollbar-horizontal {
+  height: 1px !important;
+}
+
+.swiper-scrollbar-drag {
+  background-color: black !important;
+}
+
+.flag{
+  background-image: url('/usa.svg');
+  background-position: center;
+  background-size: 50px;
+}
