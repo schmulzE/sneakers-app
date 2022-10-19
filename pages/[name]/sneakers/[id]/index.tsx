@@ -1,58 +1,70 @@
-import React, { Component, useState, useEffect } from 'react';
-import Slider from "react-slick";
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Form from '../../../../components/Form'
 
-export class SimpleSlider extends Component< {images: string[]}> {
-  render() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    };
-    return (
-      <div>
-        <h2> Single Item</h2>
-        <Slider {...settings}>
-         {this.props.images.map( (item, index) => (
-          <div key={index}>
-            <img src={item} alt=''/>
-          </div>
-         ))}
-        </Slider>
-      </div>
-    );
-  }
-}
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Scrollbar } from 'swiper';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/scrollbar';
+
 
 const Sneaker = () => {
-  
+
   const router = useRouter();
-  const { images }  = router.query;
+  const { item }  = router.query;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialState: string[]  = []
-  const [imageArr, setImageArr] = useState(initialState)
+  const initialState: any = []
+  const [ product, setProduct] = useState(initialState)
+
+
+  useEffect(() => {
+    if(!item) {
+      return;
+    }
+    const storeproduct = async () => {
+        localStorage.setItem("item", item as string);
+    }
+    storeproduct()
+  }, [item])
 
    useEffect(() => {
-    const wishlistData = JSON.parse(localStorage.getItem("images")!);
+    const wishlistData = JSON.parse(localStorage.getItem("item")!);
     if (wishlistData) {
-      setImageArr(wishlistData);
+      setProduct(wishlistData);
     }
   }, []);
 
-  useEffect(() => {
-    if (imageArr !== initialState) {
-      localStorage.setItem("images", images as string);
-    }
-  }, [imageArr, images, initialState]);
-
-  console.log(imageArr)
+  console.log(product)
 
 
   return (
     <>
-      <SimpleSlider images={imageArr}/>
+      <div className='px-2'>
+        <Swiper
+        modules={[ Scrollbar]}
+        spaceBetween={50}
+        slidesPerView={1}
+        scrollbar={{ draggable: true }}
+        onSlideChange={() => console.log('slide change')}
+        onSwiper={(swiper) => console.log(swiper)}
+        >
+        {product.images?.all.map((item: string | undefined, index: React.Key | null | undefined)=> (
+          <SwiperSlide key={index}>
+            <img src={item} alt="" className='w-full h-full object-cover object-center px-12'/>
+          </SwiperSlide>
+        ))}
+        </Swiper>
+        <h3 className="mt-4 text-xl text-gray-700 font-black">{product.brand?.name}</h3>
+        <p className="mt-1 text-lg text-gray-900">{product.shortDescription}</p>
+        <p className="mt-1 text-2xl text-gray-900 ">{product.priceInfo?.formattedFinalPrice}</p>
+        <button className='capitalize bg-white text-black px-4 font-medium my-4 py-2 outline-none border border-slate-800 rounded-lg block w-full'>            
+          add to bag
+        </button>
+      </div>
+      <Form/>
     </>
   )
 }
