@@ -2,19 +2,22 @@ import React, {useContext, useState} from 'react'
 import Image from "next/image";
 import Head from 'next/head';
 import Link from 'next/link';
+import WishlistContext from "../store/wishlist_context";
+import BagContext from "../store/bag_context";
+import Modal from "./Modal"
+
 import { IconContext } from "react-icons";
 import { BsHandbag, BsSuitHeart } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
-import WishlistContext from "../store/wishlist_context";
-import Modal from "./Modal"
 
 const Navbar = () => {
   const wishlistCtx = useContext(WishlistContext)
+  const bagCtx = useContext(BagContext)
   const [popUp, setPopUp] = useState(false)
 
   const totalWishlist = wishlistCtx.items.length
-
+  const totalbagItem = bagCtx.items.length
    const modalHandler = () => {
     setPopUp(true)
   }
@@ -27,15 +30,15 @@ const Navbar = () => {
       <link rel="icon" href="/favicon.ico" />
     </Head>
       <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-        <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+        <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white">
           <li>
-            <a href="#" className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Home</a>
+            <a href="#" className="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0" aria-current="page">Home</a>
           </li>
           <li>
-            <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+            <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">About</a>
           </li>
           <li>
-            <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+            <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">Services</a>
           </li>
         </ul>
       </div>
@@ -65,9 +68,12 @@ const Navbar = () => {
                 <div className="inline-flex absolute -bottom-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-black">{totalWishlist}</div>
               </button>
             </Link>
-            <button type="button" className="p-1 text-xl rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" >
+            <Link href='/checkout/bag'>
+            <button type="button" className="relative p-1 text-xl rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" >
               <BsHandbag/>
+              <div className="inline-flex absolute -bottom-2 -right-2 justify-center items-center w-6 h-6 text-xs font-bold text-black">{totalbagItem}</div>
             </button>
+            </Link>
           </div>
         </div>
       </nav>
