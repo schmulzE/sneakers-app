@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-// import { useSession } from "next-auth/react";
-// import AuthForm from "../../components/AuthForm";
+import { GetServerSideProps } from "next";
+import {getSession, useSession } from "next-auth/react";
+import AuthForm from "../../components/AuthForm";
 import Stepper from "../../components/Stepper";
 import StepperControl from "../../components/StepperControl";
 import { UseContextProvider } from "../../store/stepper_context";
@@ -12,7 +13,7 @@ import Review from "../../components/steps/Review";
 
 
 export default function Component() {
-  // const { data: session } = useSession()
+  const { data: session } = useSession()
 
     const [currentStep, setCurrentStep] = useState(1);
 
@@ -65,3 +66,21 @@ export default function Component() {
       </>
     )
   }
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req })
+
+  
+  if(!session){
+    return {
+      redirect: {
+        destination:'/checkout/bag',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {session}
+  }
+}
