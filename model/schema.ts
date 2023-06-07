@@ -6,4 +6,4 @@ const userSchema = new Schema({
     password: String
 })
 
-const USers = model('user', userSchema)
+const Users = models.user || model('user', userSchema)
