@@ -6,9 +6,9 @@ interface Props{
 
 const AuthForm: React.FC<Props> = ({ children }) => {
   const [value, setValue] = useState('');
-  const onChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
-    setValue(event.target.value);
-  };
+  // const onChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+  //   setValue(event.target.value);
+  // };
   return (
    <form>
     {children}
