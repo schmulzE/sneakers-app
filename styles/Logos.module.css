@@ -1,0 +1,28 @@
+.marquee{
+  width: 100vw;
+  height: 10vh;
+  color: #111;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.marquee__content{
+  list-style: none;
+  height: 100%;
+  display: flex;
+  animation: scrolling 5s linear infinite;
+}
+
+@keyframes scrolling{
+  0%{transform: translateX(0);}
+  100%{transform: translateX(-150vw);}
+}
+
+.marquee__content li{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30vw;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
