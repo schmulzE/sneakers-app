@@ -1,0 +1,12 @@
+{
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "rules": {
+      "react/react-in-tsx-scope": "off"
+    },
+    "globals": {
+      "React": "writable"
+    }
+  }
