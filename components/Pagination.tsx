@@ -83,7 +83,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
           along with page numbers, in our case, 2 page
           numbers at a time
       */}
-      <div className="pagination text-center m-3">
+      {getPaginatedData().length > 10  && ( <div className="pagination text-center m-3">
       {/* previous button */}
       <button
         onClick={goToPreviousPage}
@@ -111,7 +111,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
       >
         <FaChevronRight/>
       </button>
-    </div>
+    </div>)}
   </div>
   );
 }
