@@ -11,17 +11,18 @@ import {
 type Props = {
   onOpen: boolean;
   setPopUp: Dispatch<SetStateAction<boolean>>;
-  children: React.ReactNode
+  children: React.ReactNode,
+  overlay?: React.ReactElement
 }
 
-const Modals: React.FC<Props> = ({onOpen, setPopUp, children}) => {
+const Modals: React.FC<Props> = ({onOpen, setPopUp, children, overlay},) => {
 
    const variant = useBreakpointValue(
       {
         base: 'full',
         md: 'full',
-        lg: 'xs',
-        xl: 'xs'
+        lg: 'lg',
+        xl: 'lg'
       },
       {
         // Breakpoint to use when mediaqueries cannot be used, such as in server-side rendering
@@ -44,7 +45,8 @@ const Modals: React.FC<Props> = ({onOpen, setPopUp, children}) => {
 
   return (
     <>
-      <Modal size={variant} isOpen={onOpen} onClose={onCloseHandler} blockScrollOnMount={variant2}>
+      <Modal  size={variant} isOpen={onOpen} onClose={onCloseHandler} blockScrollOnMount={variant2}>
+      {overlay}
         <ModalContent className='pt-12'>
           <ModalCloseButton/>
           <ModalBody>
