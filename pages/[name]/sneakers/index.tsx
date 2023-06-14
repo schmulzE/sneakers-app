@@ -1,5 +1,5 @@
 import type { GetStaticPropsContext, NextPage } from 'next'
-import { useState, useReducer, useMemo, useEffect } from "react";
+import { useState, useReducer, useMemo, useEffect, useCallback } from "react";
 import { BsFilter } from "react-icons/bs";
 import { IconContext } from "react-icons";
 import Pagination from '../../../components/Pagination';
@@ -18,7 +18,11 @@ type MenSneakersPageProps = {
   name: string
 }
 
-const Categories= ['Hi-Tops', 'Low-Tops', 'Slip-On']
+const categories = [
+ 'high-top',
+ 'low-top',
+ 'lace-up'
+]
 
  const initialState = {
   firstModal: false,
@@ -51,11 +55,13 @@ const Categories= ['Hi-Tops', 'Low-Tops', 'Slip-On']
  }
 
 const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
-  const [fetchedData, setFetchData] = useState(result)
-  const [filteredData, setFilteredData] = useState<any>([])
-  const [categoryData, setCategoryData] = useState<any>([])
   const [modal, dispatch] = useReducer(reducer, initialState)
 
+  const [state, setState] = useState({
+    products: result,
+    filters: new Set(),
+  })
+  
   const brandList = useMemo(() => {
    const arr: string[] = [];
     for (let i = 0; i < result.length; i++) {
@@ -65,40 +71,85 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
     return arr;
   }, [result])
   
-  const sortHighHandler = () => {
-    const sortedLowToHigh =  fetchedData.sort((x, y) => y.priceInfo?.finalPrice - x.priceInfo?.finalPrice)
-    setFetchData((current) => [ ...current, sortedLowToHigh])
-  }
 
-  const sortLowHandler = () => {
-    const sortedLowToHigh =  fetchedData.sort((x, y) => x.priceInfo?.finalPrice - y.priceInfo?.finalPrice)
-    setFetchData((current) => [ ...current, sortedLowToHigh])
-  }
+  const filterBrandHandler = useCallback((event) => {
+    setState(previousState => {
+      let filters = new Set(previousState.filters)
+      let products = result
 
-  const filterBrandHandler = (event: any) => {
-    const { value, checked } = event;     
-    if (checked) {
-      const filterByBrand = fetchedData.filter(item => item.brand?.name == value)
-      setCategoryData((current: any) => current.concat(filterByBrand))
-    }else {
-      setCategoryData((current: any) => current.filter((item: { brand: { name: any; }; }) => item.brand?.name !== value))
-    }
-  }
+      if (event.target.checked) {
+        filters.add(event.target.value)
+      } else {
+        filters.delete(event.target.value)
+      }
+      if (filters.size) {
+        products = products.filter(product => {
+          return filters.has(product?.brand?.name)
+        })
+      }
+      return {
+        filters,
+        products,
+      }
+    })
+  }, [setState])
 
+  const sortHighHandler = useCallback(() => {
+   setState(previousState => {
+    let filters = new Set(previousState.filters)
+     let sortedLowToHigh = previousState.products.sort((x, y) => y.priceInfo?.finalPrice - x.priceInfo?.finalPrice)
+     let products = sortedLowToHigh
+     return {
+      products,
+      filters
+     } 
+    })
+  }, [setState])
 
-  const filterCategoryHandler = (event: any) => {
-    const { value, checked } = event;   
-    if (checked) {
-      const filterCategory = result.filter(item => item.shortDescription.includes(value))
-      setFilteredData((current: any) => current.concat(filterCategory))
-    }else {
-      setFilteredData((current: any) => current.filter((item: { shortDescription: string | any[]; }) => item.shortDescription.includes(value)))
-    }
-  }
-  
-  const filtered = useMemo(() => {
-    return filteredData === undefined || filteredData.length == 0 ? fetchedData : filteredData
-  }, [filteredData, fetchedData])
+  const sortLowHandler = useCallback(() => {
+   setState(previousState => {
+    let filters = new Set(previousState.filters)
+     let sortedLowToHigh = previousState.products.sort((x, y) => x.priceInfo?.finalPrice - y.priceInfo?.finalPrice)
+     let products = sortedLowToHigh
+     return {
+      products,
+      filters
+     } 
+    })
+  }, [setState])
+
+  const handleFilterChange = useCallback((event, params: string) => {
+    setState(previousState => {
+      let filters = new Set(previousState.filters)
+      let products = result.map(item => {
+        if (item.shortDescription?.includes("high-top")){
+          return ({...item, category: "high-top"})
+        }else if(item.shortDescription?.includes("low-top")){
+          return({...item, category: "low-top"})
+        }else if(item.shortDescription?.includes("lace-up")){
+          return ({...item, category: "lace-up"})
+        }else {
+          return item
+        }
+      })
+
+      if (event.target.checked) {
+        filters.add(event.target.value)
+      } else {
+        filters.delete(event.target.value)
+      }
+      
+      if (filters.size) {
+        products = products.filter(product => {
+          return filters.has(product?.category)
+        })
+      }
+      return {
+        filters,
+        products,
+      }
+    })
+  }, [setState])
 
   return (
     <div className='px-2'>
@@ -115,11 +166,12 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
       </div>
 
       <div className="hidden lg:flex justify-between my-6">
-        <Filter brandList={brandList} filterCategoryHandler={filterCategoryHandler} filterBrandHandler={filterBrandHandler} fetchedData={fetchedData} setFilteredData={setFilteredData}/>
+        <Filter categories={categories} brandList={brandList} onFilterChange={(e) => handleFilterChange(e, "category")} filterBrandHandler={(e) => filterBrandHandler(e)} fetchedData={state.products} setFilteredData={setState}/>
         <Sort sortLowHandler={sortLowHandler} sortHighHandler={sortHighHandler}/>
       </div>
 
-      <Pagination data={filtered} title="" pageLimit={2} dataLimit={48}/>
+
+      <Pagination data={state.products} title="" pageLimit={2} dataLimit={49}/>
       <Modal onOpen={modal.firstModal} setPopUp={() =>  dispatch({ type:'closeModal1', value: false})}>
         <h2 className='text-2xl border-bottom border-b-4 border-black w-20 font-semibold pb-2'>Sort by</h2>
         <hr/>
@@ -159,8 +211,8 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
         {brandList.sort().filter(item => item !== undefined).map((item, index) => (        
           <ul className='mt-6' key={index}>
             <li className='my-6'>
-            <input className="mr-2" type='checkbox' id='brand' value={item} name='brand' onChange={(e) => filterBrandHandler(e.target)}/>
-            {item}
+            <input className="mr-2" type='checkbox' id={item} value={item} onChange={(e) => filterBrandHandler(e.target)}/>
+            <label htmlFor={item}>{item}</label>
             </li>
           </ul>
         ))}
@@ -168,11 +220,11 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
       <Modal onOpen={modal.thirdModal} setPopUp={() =>  dispatch({ type:'closeModal3', value: false})}>
         <h2 className='text-2xl border-bottom border-b-4 border-black w-21 font-semibold pb-2'>Category</h2>
         <hr/>
-          {Categories.map((item, index) => (        
+          {categories.map((item, index) => (        
             <ul className='mt-6' key={index}>
               <li className='my-6'>
-                <input className="mr-2" type='checkbox' id='brand' value={item} name='brand' onChange={(e) => filterCategoryHandler(e.target)}/>
-                {item}
+                <input className="mr-2" type='checkbox' id={item} value={item} onChange={(e) => handleFilterChange(e, "category")}/>
+                <label htmlFor={item}>{item}</label>
               </li>
             </ul>
           ))}
@@ -187,8 +239,8 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
           max={42850}
           step={100}
           priceCap={1000}
-          fetchedData={fetchedData}
-          setFiltered={setFilteredData}
+          fetchedData={state.products}
+          setFiltered={setState}
         />
       </Modal>
      <Form/>
