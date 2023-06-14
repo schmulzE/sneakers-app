@@ -1,6 +1,5 @@
 import React, { Dispatch, useState} from 'react';
 import { BsChevronUp, BsChevronDown} from "react-icons/bs";
-
 import {
   Menu,
   MenuButton,
@@ -16,17 +15,17 @@ import {
 } from '@chakra-ui/react'
 import RangeInput from './RangeInput';
 
-const Categories= ['Hi-Tops', 'Low-Tops', 'Slip-On']
 
 type Props = {
   brandList: string[],
-  filterCategoryHandler: Dispatch<any>,
-  filterBrandHandler: Dispatch<any>,
+  onFilterChange: (e: any) => void,
+  filterBrandHandler: (e: any) => void,
   fetchedData: any[],
   setFilteredData: Dispatch<any>
+  categories: string[],
 }
 
-const Filter: React.FC<Props> = ({brandList, filterCategoryHandler, filterBrandHandler, fetchedData, setFilteredData}) => {
+const Filter: React.FC<Props> = ({brandList, onFilterChange, fetchedData, filterBrandHandler, setFilteredData, categories}) => {
    const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -46,11 +45,11 @@ const Filter: React.FC<Props> = ({brandList, filterCategoryHandler, filterBrandH
               </AccordionButton>
             </h2>
             <AccordionPanel pb={4}>
-              {Categories.map((item, index) => (        
-              <ul className='mt-6' key={index}>
+              {categories.map((item, index) => (       
+                <ul className='mt-6' key={index}>
                 <li className='my-6'>
-                  <input className="mr-2" type='checkbox' id='brand' value={item} name='brand' onChange={(e) => filterCategoryHandler(e.target)}/>
-                  {item}
+                  <input className="mr-2" type='checkbox' id={item} value={item} onChange={onFilterChange} />
+                  <label htmlFor={item}>{item}</label>
                 </li>
               </ul>
             ))}
@@ -68,11 +67,11 @@ const Filter: React.FC<Props> = ({brandList, filterCategoryHandler, filterBrandH
             </h2>
             <AccordionPanel pb={4}>
               <div className="overflow-auto h-[200px]">
-              {brandList.sort().filter(item => item !== undefined).map((item, index) => (        
+              {brandList.sort((a, b) => a.localeCompare(b, 'en-US', {caseFirst: 'lower'})).filter(item => item !== undefined).map((item, index) => (        
                 <ul className='mt-6' key={index}>
                   <li className='my-6'>
-                  <input className="mr-2" type='checkbox' id='brand' value={item} name='brand' onChange={(e) => filterBrandHandler(e.target)}/>
-                  {item}
+                  <input className="mr-2" type='checkbox' id={item} value={item} onChange={filterBrandHandler}/>
+                  <label htmlFor={item}>{item}</label>
                   </li>
                 </ul>
               ))}
