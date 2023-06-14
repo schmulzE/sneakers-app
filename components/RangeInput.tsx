@@ -16,9 +16,15 @@ const RangeInput: React.FC<Props> = ({ initialMin, initialMax, min, max, step, p
   const [maxValue, setMaxValue] = useState(initialMax);
 
    useEffect(() => {
-   const filterPrice = fetchedData.filter(item => item.priceInfo?.finalPrice > minValue && item.priceInfo?.finalPrice < maxValue)
-  //  console.log(filterPrice)
-    setFiltered((current: any) => current.concat(filterPrice))
+     setFiltered(previousState => {
+      const filters = new Set(previousState.filters)
+      const filterPrice = previousState.products.filter(item => item.priceInfo?.finalPrice > minValue && item.priceInfo?.finalPrice < maxValue)
+      const products = filterPrice
+      return {
+        products,
+        filters
+      }
+    })
   }, [fetchedData, maxValue, minValue, setFiltered])
 
   const handleMin = (e: { target: { value: string; }; }) => {
