@@ -13,7 +13,7 @@ import { FiSearch } from "react-icons/fi";
 import { FaRegUser } from 'react-icons/fa';
 import Register from './Register';
 import Login from './Login';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from '@chakra-ui/react';
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Menu, MenuButton, MenuDivider, MenuItem, MenuList, ModalOverlay } from '@chakra-ui/react';
 
 const NavMenu = () => {
   return (
@@ -38,15 +38,24 @@ const NavMenu = () => {
   )
 }
 
+const OverlayOne = () => (
+  <ModalOverlay
+    bg='blackAlpha.300'
+    backdropFilter='blur(10px) hue-rotate(90deg)'
+  />
+)
 const Navbar = () => {
   const wishlistCtx = useContext(WishlistContext)
   const bagCtx = useContext(BagContext)
   const [popUp, setPopUp] = useState(false)
+  const [overlay, setOverlay] = useState(<OverlayOne />)
+
 
   const totalWishlist = wishlistCtx.items.length
   const totalbagItem = bagCtx.items.length
    const modalHandler = () => {
     setPopUp(true)
+    setOverlay(<OverlayOne />)
   }
 
   return (
@@ -113,8 +122,8 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-      <Modal onOpen={popUp} setPopUp={setPopUp}>
-        <Tabs>
+      <Modal onOpen={popUp} setPopUp={setPopUp} overlay={overlay}>
+        <Tabs >
           <TabList>
             <Tab className='uppercase text-lg'>sign in</Tab>
             <Tab className='uppercase text-lg'>i&apos;m new here</Tab>
