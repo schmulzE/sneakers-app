@@ -8,7 +8,7 @@ interface Props{
 
 const Card: React.FC<Props> = ({ icon, header, text}) => {
   return (
-    <div className='w-full px-2 border-slate-200 border my-3 p-4'>
+    <div className='w-full px-2 border-slate-300 border my-3 p-4'>
       <div className='py-2'>{icon}</div>
       <h3 className='py-3'>{header}</h3>
       <p className='capitalize text-sm my-1'>{text}</p>
