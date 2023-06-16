@@ -12,27 +12,25 @@ const Form = () => {
         <label className='text-sm' htmlFor='Mensneakers'>Men sneakers</label>
       </div>
       <div className="mb-2 block">
-        <input className="mr-2" type="checkbox"/>
+        <input className="mr-2" type="checkbox" id='email'/>
         <label
           htmlFor="email"
         >Get Email</label>
       </div>
       <input
         className='w-full rounded-md p-3 border border-slate-300'
-        id="email"
         type="email"
         placeholder="Your email address"
         required={true}
       />
       <div className="mb-2 mt-6 block">
-        <input className="mr-2" type="checkbox"/>
+        <input className="mr-2" type="checkbox" id='sms'/>
         <label
           htmlFor="sms"
         >SMS</label>
       </div>
       <input
         className='w-full rounded-md p-3 border border-slate-300'
-        id="sms"
         type="number"
         placeholder="Your phone number"
         required={true}
