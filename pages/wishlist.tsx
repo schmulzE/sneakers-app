@@ -1,26 +1,26 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import React, { useContext, useState } from "react";
-import WishlistContext from "../store/wishlist_context";
-import BagContext from "../store/bag_context"
+import { useCart } from "../context/CartContext"
 import Form from "../components/Form";
 import WishlistCart from "../components/WishlistCart"
+import { useBag } from '../context/BagContext';
 
 const Wishlist: NextPage = () => {
-  const wishlistCtx = useContext(WishlistContext)
-  const bagCtx = useContext(BagContext)
-  const numberOfItems = wishlistCtx.items.length
+  const { removeItem, items} = useCart()
+  const {addToBag, bag} = useBag()
+  const numberOfItems = items.length
   
   const removeWishlist = (item: { id: number; }) => {
-    wishlistCtx.removeItem(item.id)
+    removeItem(item.id)
   }
 
    const addToBagHandler = (item: { id: number; }) => {
-    const foundItem =  bagCtx.items.find((it: { id: number; }) => it.id === item.id )
+    const foundItem =  bag.find((it: { id: number; }) => it.id === item.id )
     if(foundItem){
       return
     }else { 
-      bagCtx.addItem(item)
+      addToBag(item)
     }
   }
 
@@ -38,7 +38,7 @@ const Wishlist: NextPage = () => {
           </a>
         </Link>
 
-        <WishlistCart data={wishlistCtx.items} handleClick={removeWishlist} addToBag={addToBagHandler}/>
+        <WishlistCart data={items} handleClick={removeWishlist} addToBag={addToBagHandler}/>
         <Form/>
       </div>
     </div>
