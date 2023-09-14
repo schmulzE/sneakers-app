@@ -1,6 +1,5 @@
-import type { NextPage } from 'next'
-import React, { useState , useContext} from 'react';
-import BagContext from "../../store/bag_context";
+import type { NextPage, NextPageContext } from 'next'
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Modal from '../../components/Modal';
 import Login from '../../components/Login'
@@ -12,25 +11,27 @@ import { AiOutlineEyeInvisible, AiOutlineEye, AiOutlineMail, AiOutlineQuestionCi
 import {MdClose} from 'react-icons/md'
 import Form from '../../components/Form'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
+import { useBag } from '../../context/BagContext';
+import { checkout } from '../../lib/checkout';
+import { getSession } from 'next-auth/react';
 
 
 
 const Bag: NextPage = () => {
  const [popUp, setPopUp] = useState(false)
-
- const bagCtx = useContext(BagContext)
- 
+  const {bag, removeFromBag} = useBag()
 
  let delivery = 19
- const subTotal: number = bagCtx.items?.reduce((acc: number, curr: any) =>  {return  acc + curr.priceInfo?.finalPrice}, 0)
- const total = bagCtx.items?.reduce((acc: number, curr: any) =>  {return  acc + curr.priceInfo?.finalPrice}, delivery)
+ const subTotal: number = bag.reduce((acc: number, curr: any) =>  {return  acc + curr.priceInfo?.finalPrice}, 0)
+ const total = bag?.reduce((acc: number, curr: any) =>  {return  acc + curr.priceInfo?.finalPrice}, delivery)
 
   const removeBag = (item: { id: number; }) => {
-    bagCtx.removeItem(item.id)
+    removeFromBag(item.id)
   }
 
- const modalHandler = () => {
-  setPopUp(true)
+
+ const handleCheckout = () => {
+  checkout(bag)
  }
 
 
@@ -41,11 +42,13 @@ const Bag: NextPage = () => {
       <p className="text-center mt-2">Never lose styles in your shopping bag again - simply login or register to save them</p>
     </div>
 
-    <button onClick={modalHandler} className='font-semibold capitalize bg-black text-white px-8 my-4 py-2 outline-none border border-slate-800 rounded-lg block w-full text-center'>
-      go to checkout
-    </button>
+    <Link href="/wishlist">
+      <a  href="#" className='lg:w-1/2 lg:mx-auto md:w-1/2 md:mx-auto font-semibold capitalize bg-[#1b1b1b] text-white px-8 my-4 py-2 lg:py-3 outline-none border border-slate-800 rounded-lg block w-full text-center'>
+        go to wishlist
+      </a>
+    </Link>
 
-    <ul className='mt-10 flex flex-wrap'>
+    <ul className='mt-10 flex flex-wrap lg:mx-10'>
       <li className='flex my-2'>
         <div className="rounded-full h-5 w-5 flag mr-2"></div>
         <span className='text-sm'>Sending from <b>United State</b></span>
@@ -58,36 +61,38 @@ const Bag: NextPage = () => {
       </li>
     </ul>
 
-    <hr className=' bg-neutral-900'/>
-
-    {bagCtx.items.map((product: any) => (
-      <div id="checkout-cart" key={product.id}className="grid grid-cols-2 relative">
+    <hr className=' bg-neutral-900 lg:mx-10'/>
+    <div className="lg:flex md:flex lg:justify-between lg:mx-10 lg:gap-10">
+    {bag.map((product) => (
+      <div id="checkout-cart" key={product.id}className="grid grid-cols-2 md:w-1/2 relative">
         <IconContext.Provider value={{style: {fontWeight: 800}, className:"h-6 w-6"}}>
             <button className="absolute right-0 top-0 justify-self-end p-2 w-9 h-9 rounded-full mt-2 font-black z-10" onClick={() =>{ removeBag(product);}}>
               <MdClose/>
             </button>
           </IconContext.Provider>
-          <div id="image"><img src={product.images?.cutOut} alt={product.imageAlt} className="h-1/2 object-contain object-center pl-6"/></div>
+          <div id="image"><img src={product.images?.cutOut} alt={product.shortDescription} className="h-1/2 object-contain object-center pl-6"/></div>
           <div id="details" className='flex flex-wrap'>
             <div id="desc">
               <h3 className="mt-4 text-md text-neutral-900 font-bold">{product.brand?.name}</h3>
               <p className="mt-1 text-md text-gray-900">{product.shortDescription}</p>
+              <p className="mt-1 text-md text-gray-900">{product.priceInfo.formattedFinalPrice}</p>
               <p className="mt-2 text-sm text-gray-900 uppercase">Sneakfit id: {product.id}</p>
             </div>
             <div id="size" className='basis-full my-4'>
               <h2 className='capitalize'>size</h2>
-              <p className="text-lg block font-semibold">38 IT</p>
+              <p className="text-lg block font-semibold">{product.size} IT</p>
             </div>
             <div id="quantity" className='my-4'>
               <h3 className='capitalize'>quantity</h3>
-              <p className="text-lg font-semibold">1</p>
+              <p className="text-lg font-semibold">{product.quantity}</p>
             </div>
           </div>
       </div>
     ))}
+    </div>
 
 
-    <div id="table-section">
+    <div id="table-section" className='lg:mx-auto lg:w-1/2 lg:mt-20 md:w-1/2 md:mx-auto mt-20'>
       <h2 className='font-bold'>Summary</h2>
       <table className="w-full text-md text-left text-gray-500 table-fixed">
         <tbody>
@@ -100,7 +105,7 @@ const Bag: NextPage = () => {
             </td>
           </tr>
           <tr className="bg-white pb-4">
-            <th scope="row" className="pt-1 pb-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <th scope="row" className="pt-1 pb-3 font-medium text-gray-500 whitespace-nowrap">
               Delivery
             </th>
             <td className="pt-1 pb-3 text-right">
@@ -119,20 +124,20 @@ const Bag: NextPage = () => {
       </table>
     </div>
 
-    <Link href="/checkout">
-      <a onClick={modalHandler} className=' font-semibold capitalize bg-black text-white px-8 my-4 py-2 outline-none border border-slate-800 rounded-lg block w-full text-center'>
+  
+      <a onClick={handleCheckout} className='lg:w-1/2 md:w-1/2 md:mx-auto lg:mx-auto font-semibold capitalize bg-[#1b1b1b] text-white px-8 my-4 lg:py-3 py-2 outline-none border border-slate-800 rounded-lg block w-full text-center'>
         go to checkout
       </a>
-    </Link>
 
-    <div id="poster1" className='bg-neutral-100 text-left py-6 px-3 my-3 w-full'>
+
+    <div id="poster1" className='bg-neutral-100 text-left py-6 px-3 my-3 lg:my-6 lg:mx-10'>
       <h2 className='pb-3 uppercase'>free returns</h2>
       <p>Free returns within 14 days(exludes final sales, delivery charges)</p>
     </div>
 
-    <h1>Recommendations</h1>
+    <h1 className='lg:mx-10'>Recommendations</h1>
 
-    <div id="poster2" className='bg-neutral-100 text-left py-6 px-3 my-3 w-full'>
+    <div id="poster2" className='bg-neutral-100 text-left py-6 px-3 my-3 lg:my-6 lg:mx-10'>
       <h2 className='pb-3 capitalize font-semibold'>need help?</h2>
       <p className='text-sm'>Contact our global Customer Service team, you can reach us by phone or email. Alternatively, you may find the answer in the <a className='underline'>Frequently Asked Question page.</a></p>
       <div className="flex flex-wrap py-4">
@@ -172,7 +177,7 @@ const Bag: NextPage = () => {
 
         <TabPanels>
           <TabPanel>
-            <Login/>
+            <Login onOpen={popUp} setPopUp={setPopUp}/>
           </TabPanel>
           <TabPanel>
             <Register/>
@@ -180,9 +185,26 @@ const Bag: NextPage = () => {
         </TabPanels>
       </Tabs>
     </Modal>
-      
+         
     </div>
   )
 }
 
 export default Bag
+
+export async function getServerSideProps(context: NextPageContext){
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session }
+  }
+}
