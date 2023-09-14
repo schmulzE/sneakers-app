@@ -14,7 +14,7 @@ import Form from '../../../components/Form';
 
 
 type MenSneakersPageProps = {
-  result: any[],
+  result: Sneakers[],
   name: string
 }
 
@@ -59,9 +59,9 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
 
   const [state, setState] = useState({
     products: result,
-    filters: new Set(),
+    filters: new Set<string>(),
   })
-  
+
   const brandList = useMemo(() => {
    const arr: string[] = [];
     for (let i = 0; i < result.length; i++) {
@@ -118,7 +118,7 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
     })
   }, [setState])
 
-  const handleFilterChange = useCallback((event, params: string) => {
+  const handleFilterChange = useCallback((event: { target: { checked: boolean; value: string; }; }, params: string) => {
     setState(previousState => {
       let filters = new Set(previousState.filters)
       let products = result.map(item => {
@@ -141,7 +141,7 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
       
       if (filters.size) {
         products = products.filter(product => {
-          return filters.has(product?.category)
+          return filters.has(product.category)
         })
       }
       return {
@@ -160,18 +160,18 @@ const Home: NextPage<MenSneakersPageProps> = ({ result, name }) => {
         </button> 
       </IconContext.Provider>
 
-      <div className="mx-2 mt-8">
+      <div className="lg:mx-10 md:mx-10 mt-8">
       <div className="md:text-4xl uppercase font-bold text-3xl my-2">designer sneakers for {name}</div>
       <p className="leading-1 text-md">Start your sneaker search on Farfetch. From the world’s rarest sneakers for men courtesy of Stadium Goods to the latest cult styles, discover the icons of yesterday, today, and tomorrow. We’re talking Balenciaga Triple S, Nike Air Max and of course we’re still kicking it old school with Vans and Converse.</p>
       </div>
 
-      <div className="hidden lg:flex justify-between my-6">
+      <div className="hidden lg:flex justify-between lg:mx-8 my-6">
         <Filter categories={categories} brandList={brandList} onFilterChange={(e) => handleFilterChange(e, "category")} filterBrandHandler={(e) => filterBrandHandler(e)} fetchedData={state.products} setFilteredData={setState}/>
         <Sort sortLowHandler={sortLowHandler} sortHighHandler={sortHighHandler}/>
       </div>
 
 
-      <Pagination data={state.products} title="" pageLimit={2} dataLimit={49}/>
+      <Pagination data={state.products} title="" pageLimit={2} dataLimit={48}/>
       <Modal onOpen={modal.firstModal} setPopUp={() =>  dispatch({ type:'closeModal1', value: false})}>
         <h2 className='text-2xl border-bottom border-b-4 border-black w-20 font-semibold pb-2'>Sort by</h2>
         <hr/>
@@ -286,7 +286,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
   // Fetch data from external API
 
-  const res = await fetch(`https://www.farfetch.com/ng/plpslice/listing-api/products-facets?page=1&view=60&sort=3&scale=${scale}&pagetype=Shopping&rootCategory=${name}&pricetype=FullPrice&c-category=${category}`, options)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}?page=1&view=60&sort=3&scale=${scale}&pagetype=Shopping&rootCategory=${name}&pricetype=FullPrice&c-category=${category}`, options)
   const data = await res.json()
   const result = data.listingItems.items
 
