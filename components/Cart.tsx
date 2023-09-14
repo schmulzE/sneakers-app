@@ -4,25 +4,25 @@ import { IconContext } from "react-icons";
 import Link from "next/link";
 
 type Props = {
-  data: any[];
-  handleClick: (item: any) => void;
-  wishlist: any[];
+  data: Sneakers[];
+  handleClick: (item: Sneakers) => void;
+  wishlist: Sneakers[];
   icon: JSX.Element;
 } 
 
 const Cart: React.FC<Props> = ( {data, handleClick, wishlist, icon } ) => {
 
   const wishlisted = useCallback(
-    (item : any) =>  wishlist.findIndex((it) => it.id == item.id) != -1
+    (item : Sneakers) =>  wishlist.findIndex((it) => it.id == item.id) != -1
      ,
     [wishlist],
   )
-
+  
   return (
     <div className="bg-white">
       <div className="mx-auto md:max-w-4xl max-w-2xl py-8 md:py-3 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8"> 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-6 xs:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 xl:gap-x-8">
-          {data?.filter((item: { id: number }) =>  item.id).map((product: any) => (
+          {data?.filter((item: { id: number }) =>  item.id).map((product: Sneakers) => (
             <div key={product.id} className="grid">
             <IconContext.Provider value={{style: {fontWeight: 800}, className:"h-6 w-6"}}>
               <button className="relative justify-self-end p-2 w-9 h-9 rounded-full mt-1 mr-3 font-black " onClick={() =>{ handleClick(product);}}>
@@ -37,7 +37,7 @@ const Cart: React.FC<Props> = ( {data, handleClick, wishlist, icon } ) => {
               <div className="aspect-w-1 aspect-h-1 w-full h-40 overflow-hidden bg-white xl:aspect-w-7 xl:aspect-h-8">
                 <img
                   src={product.images?.cutOut}
-                  alt={product.imageAlt}
+                  alt={product.shortDescription}
                   className="h-full w-full object-cover object-center group-hover:opacity-75 p-3"
                 />
               </div>
