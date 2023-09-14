@@ -1,12 +1,12 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import Cart from "../components/Cart";
 import { useRouter } from 'next/router'
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa"
-import WishlistContext from "../store/wishlist_context";
 import { BsSuitHeart } from 'react-icons/bs'
+import { useCart } from '../context/CartContext';
 
 type IProps = {
-  data: any[],
+  data: Sneakers[],
   title: string,
   pageLimit: number,
   dataLimit: number
@@ -16,43 +16,26 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
   const [pages] = useState(Math.round(data.length / dataLimit));
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter()
-  const wishlistCtx = useContext(WishlistContext)
-
-  const wishlist = wishlistCtx.items
+  const {items, removeItem, addItem} = useCart()
+  const wishlist = items
 
 
   const handleClick = (item: { id: number; }) => {
-   const foundItem =  wishlistCtx.items.find((it: { id: number; }) => it.id === item.id )
+   const foundItem =  items.find((it: { id: number; }) => it.id === item.id )
    if(foundItem) {
-    wishlistCtx.removeItem(item.id)
+    removeItem(item.id)
    }else {
-    wishlistCtx.addItem(item)
+    addItem(item)
    }
   }
 
-
-  // useEffect(() => {
-  //   const wishlistData = JSON.parse(localStorage.getItem("wishlist")!);
-  //   if (wishlistData) {
-  //     setWishlist(wishlistData);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (wishlist !== initialState) {
-  //     localStorage.setItem("wishlist", JSON.stringify(wishlist));
-  //   }
-  // }, [initialState, wishlist]);
-
-
   function goToNextPage(): void {
     setCurrentPage((page: number) => page + 1)
-    router.push(`?page=2`, undefined, { shallow: true })
+    router.push(`/men/sneakers/?page=2`, undefined, { shallow: true })
   }
   
   function goToPreviousPage() {
     setCurrentPage((page: number) => page - 1)
-    // router.push(`?page=1`, undefined, { shallow: true })
   }
 
   function changePage(event: React.ChangeEvent<HTMLInputElement>) {
@@ -60,9 +43,9 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
     setCurrentPage(pageNumber);
   }
 
-  const getPaginatedData = (): number[] => {
+  const getPaginatedData = () => {
     const startIndex = currentPage * dataLimit - dataLimit;
-    const endIndex = startIndex + dataLimit;
+    const endIndex = startIndex + dataLimit + 1;
     return data.slice(startIndex, endIndex);
   };
 
@@ -83,7 +66,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
           along with page numbers, in our case, 2 page
           numbers at a time
       */}
-      {getPaginatedData().length > 10  && ( <div className="pagination text-center m-3">
+      {getPaginatedData().length > 10  && ( <div className="pagination text-center mx-3 mt-8 ">
       {/* previous button */}
       <button
         onClick={goToPreviousPage}
@@ -99,7 +82,7 @@ const Pagination: React.FC<IProps> = ({ data, title, pageLimit, dataLimit }) => 
           onClick ={(event: React.MouseEvent) => changePage}
           className={`paginationItem ${currentPage === item ? 'p-2 font-black' : null}`}
         >
-          <span className='m-5'>{item}</span>
+          <span className='mx-5 border border-gray-400 p-4'>{item}</span>
           {/* <span>{index}</span> */}
         </button>
       ))}
