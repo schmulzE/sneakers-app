@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import { IconContext } from "react-icons";
 import { FcGoogle } from "react-icons/fc";
 import { useFormik } from 'formik';
@@ -17,27 +17,38 @@ const Register = () => {
       password: "",
       cpassword: ""
     },
-    validate: registerValidate,
+    // validate: registerValidate,
     onSubmit,
   })
+   interface User {
+    email: string;
+    password: string;
+    cpassword?: string
+  }
 
-  async function onSubmit(values: any) {
-    // console.log(values)
-    const options = {
-      method: "POST",
-      headers:{'Content-Type': 'application/json'},
-      body: JSON.stringify(values)
+  async function onSubmit(values: User) {
+    try {
+      const options = {
+        method: "POST",
+        headers:{'Content-Type': 'application/json'},
+        body: JSON.stringify(values)
+      }
+  
+      await fetch('http://localhost:3000/api/auth/register', options)
+      .then(res => res.json())
+      .then((data) => {
+         if(data)router.push("http://localhost:3000/checkout/bag")
+      })
+      
+    } catch (error) {
+      console.error(error.message)
+      console.error(error)
     }
-
-    await fetch('https://localhost:3000/api/auth/register', options)
-    .then(res => res.json())
-    .then((data) => {
-       if(data)router.push("http://localhost:3000/checkout")
-    })
+    // console.log(values)
   }
 
   const googleSigningHandler = async() => {
-    signIn('google', { callbackUrl: 'http://localhost:3000/checkout'})
+    signIn('google', { callbackUrl: 'http://localhost:3000/checkout/bag'})
   }
   return (
     <>
