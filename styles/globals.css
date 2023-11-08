@@ -5,6 +5,68 @@
 html,body{
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+.nav-link::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #000;
+  transition: width .3s;
+  position: relative;
+  z-index: 9999 ;
+}
+  
+.nav-link:hover::after {
+  width: 100%;
+  transition: width .3s;
+  z-index: 9999 ;
+}
+
+.active::after {
+width: 100%;
+background: #000;
+transition: width .3s;
+z-index: 9999 ;
+}
+
+#adaptive-cursor {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 50px;
+  color: rgba(255, 255, 255, 0);
+  font-size: 20px;
+  height: 0;
+  justify-content: center;
+  line-height: 1.5;
+  padding: 5px;
+  pointer-events: none;
+  position: fixed;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  transition: color 0.5s ease;
+  width: 0;
+  white-space: nowrap;
+  z-index: 99999;
+  display: none;
+}
+#adaptive-cursor.has-label-state {
+  color: black;
+  transition-delay: 0.3s;
+}
+
+@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */
+  #adaptive-cursor {
+    display: flex;
+  }
 }
 
 
@@ -39,7 +101,7 @@ input {
 }
 
 input[type=number] {
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   /* text-align: center; */
   /* font-size: 1.6em; */
   appearance: textfield;
