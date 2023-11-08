@@ -7,6 +7,7 @@ import {
   AccordionPanel,
   Box
 } from '@chakra-ui/react'
+import Link from 'next/link';
 
 
 
@@ -20,7 +21,9 @@ const Footer = () => {
                 <h2>
                   <AccordionButton>
                     <Box flex='1' textAlign='left' className='uppercase'>
-                      Sneakfit app
+                    <Link href="/">
+                        <img src="/sneaker_logo_white.svg" alt="Sneakfit Logo" className='w-24'/>
+                    </Link>
                     </Box>
                     {isExpanded ? (
                       <AiOutlineMinus fontSize='12px' />
